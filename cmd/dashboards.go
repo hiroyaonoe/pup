@@ -6,6 +6,7 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/DataDog/datadog-api-client-go/v2/api/datadogV1"
@@ -189,10 +190,89 @@ var dashboardsDeleteCmd = &cobra.Command{
 	RunE:  runDashboardsDelete,
 }
 
+var dashboardsCreateCmd = &cobra.Command{
+	Use:   "create",
+	Short: "Create a new dashboard",
+	RunE:  runDashboardsCreate,
+}
+
+var dashboardsUpdateCmd = &cobra.Command{
+	Use:   "update [dashboard-id]",
+	Short: "Update a dashboard",
+	Args:  cobra.ExactArgs(1),
+	RunE:  runDashboardsUpdate,
+}
+
 func init() {
+	dashboardsCreateCmd.Flags().String("body", "", "JSON body (@filepath or - for stdin) (required)")
+	if err := dashboardsCreateCmd.MarkFlagRequired("body"); err != nil {
+		panic(fmt.Errorf("failed to mark flag as required: %w", err))
+	}
+
+	dashboardsUpdateCmd.Flags().String("body", "", "JSON body (@filepath or - for stdin) (required)")
+	if err := dashboardsUpdateCmd.MarkFlagRequired("body"); err != nil {
+		panic(fmt.Errorf("failed to mark flag as required: %w", err))
+	}
+
 	dashboardsCmd.AddCommand(dashboardsListCmd)
 	dashboardsCmd.AddCommand(dashboardsGetCmd)
 	dashboardsCmd.AddCommand(dashboardsDeleteCmd)
+	dashboardsCmd.AddCommand(dashboardsCreateCmd)
+	dashboardsCmd.AddCommand(dashboardsUpdateCmd)
+}
+
+func runDashboardsCreate(cmd *cobra.Command, args []string) error {
+	client, err := getClient()
+	if err != nil {
+		return err
+	}
+
+	bodyFlag, _ := cmd.Flags().GetString("body")
+	data, err := readBody(bodyFlag)
+	if err != nil {
+		return err
+	}
+
+	var body datadogV1.Dashboard
+	if err := json.Unmarshal(data, &body); err != nil {
+		return fmt.Errorf("failed to parse dashboard: %w", err)
+	}
+
+	api := datadogV1.NewDashboardsApi(client.V1())
+	resp, r, err := api.CreateDashboard(client.Context(), body)
+	if err != nil {
+		return formatAPIError("create dashboard", err, r)
+	}
+
+	return formatAndPrint(resp, nil)
+}
+
+func runDashboardsUpdate(cmd *cobra.Command, args []string) error {
+	client, err := getClient()
+	if err != nil {
+		return err
+	}
+
+	dashboardID := args[0]
+
+	bodyFlag, _ := cmd.Flags().GetString("body")
+	data, err := readBody(bodyFlag)
+	if err != nil {
+		return err
+	}
+
+	var body datadogV1.Dashboard
+	if err := json.Unmarshal(data, &body); err != nil {
+		return fmt.Errorf("failed to parse dashboard: %w", err)
+	}
+
+	api := datadogV1.NewDashboardsApi(client.V1())
+	resp, r, err := api.UpdateDashboard(client.Context(), dashboardID, body)
+	if err != nil {
+		return formatAPIError("update dashboard", err, r)
+	}
+
+	return formatAndPrint(resp, nil)
 }
 
 func runDashboardsList(cmd *cobra.Command, args []string) error {

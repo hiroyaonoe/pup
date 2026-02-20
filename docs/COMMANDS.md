@@ -24,7 +24,7 @@ pup <domain> <subgroup> <action> [options] # Nested commands
 | logs | search, list, aggregate | cmd/logs.go | ✅ |
 | traces | - | cmd/traces_simple.go | ❌ |
 | monitors | list, get, delete, search | cmd/monitors.go | ✅ |
-| dashboards | list, get, delete, url | cmd/dashboards.go | ✅ |
+| dashboards | list, get, create, update, delete, url | cmd/dashboards.go | ✅ |
 | slos | list, get, delete, status | cmd/slos.go | ✅ |
 | incidents | list, get, attachments, settings, handles, postmortem-templates | cmd/incidents.go | ✅ |
 | rum | apps, metrics, retention-filters, sessions, playlists, heatmaps | cmd/rum.go | ✅ |
