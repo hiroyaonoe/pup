@@ -117,7 +117,7 @@ pup infrastructure hosts list
 
 ### Monitoring & Alerting
 - **monitors** - Monitor management (list, get, delete)
-- **dashboards** - Dashboard management (list, get, delete, url)
+- **dashboards** - Dashboard management (list, get, create, update, delete, url)
 - **slos** - Service Level Objectives (list, get, delete, status)
 - **synthetics** - Synthetic monitoring (tests, locations, suites)
 - **notebooks** - Investigation notebooks (list, get, delete)

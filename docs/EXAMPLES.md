@@ -151,6 +151,24 @@ pup dashboards get "abc-123-def"
 pup dashboards url "abc-123-def"
 ```
 
+### Create Dashboard
+```bash
+# Create a dashboard from a JSON file
+pup dashboards create --body @dashboard.json
+
+# Create from stdin
+cat dashboard.json | pup dashboards create --body -
+```
+
+### Update Dashboard
+```bash
+# Update a dashboard from a JSON file
+pup dashboards update "abc-123-def" --body @updated-dashboard.json
+
+# Update from stdin
+cat updated-dashboard.json | pup dashboards update "abc-123-def" --body -
+```
+
 ### Delete Dashboard
 ```bash
 pup dashboards delete "abc-123-def" --yes

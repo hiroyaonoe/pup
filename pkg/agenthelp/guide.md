@@ -221,6 +221,12 @@ pup dashboards list
 
 # Get dashboard details (includes all widgets and queries)
 pup dashboards get <dashboard-id>
+
+# Create a dashboard from a JSON file
+pup dashboards create --body @dashboard.json
+
+# Update a dashboard
+pup dashboards update <dashboard-id> --body @updated-dashboard.json
 ```
 
 ## Events
