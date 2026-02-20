@@ -72,7 +72,7 @@ See [docs/COMMANDS.md](docs/COMMANDS.md) for detailed command reference.
 | API Domain | Status | Pup Commands | Notes |
 |------------|--------|--------------|-------|
 | Monitors | ✅ | `monitors list`, `monitors get`, `monitors delete`, `monitors search` | Full CRUD support with advanced search |
-| Dashboards | ✅ | `dashboards list`, `dashboards get`, `dashboards delete`, `dashboards url` | Full management capabilities |
+| Dashboards | ✅ | `dashboards list`, `dashboards get`, `dashboards create`, `dashboards update`, `dashboards delete`, `dashboards url` | Full CRUD support |
 | SLOs | ✅ | `slos list`, `slos get`, `slos create`, `slos update`, `slos delete`, `slos corrections` | Full CRUD plus corrections |
 | Synthetics | ✅ | `synthetics tests list`, `synthetics locations list` | Test management support |
 | Downtimes | ✅ | `downtime list`, `downtime get`, `downtime cancel` | Full downtime management |
@@ -298,6 +298,12 @@ pup dashboards list
 
 # Get dashboard details
 pup dashboards get abc-123-def
+
+# Create a dashboard from a JSON file
+pup dashboards create --body @dashboard.json
+
+# Update a dashboard
+pup dashboards update abc-123-def --body @updated-dashboard.json
 
 # Delete dashboard
 pup dashboards delete abc-123-def --yes
